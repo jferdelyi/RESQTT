@@ -92,6 +92,7 @@ clients = {}
 # @param port the broker port (default 1883)
 # @param clean_session if true set as a new session (default True)
 # @param keep_alive the keep alive in s (default 60)
+# @return RC
 @app.route("/v1/connect", methods=['GET'])
 def connect():
 	try:
@@ -137,6 +138,7 @@ def connect():
 
 # Disconnect route
 # @param client client ID
+# @return RC
 @app.route("/v1/disconnect", methods=['GET'])
 def disconnect():
 	try:
@@ -175,6 +177,7 @@ def disconnect():
 # @param client client ID
 # @param topic the topic
 # @param qos the QoS (default 0)
+# @return RC
 @app.route("/v1/subscribe", methods=['GET'])
 def subscribe():
 	try:
@@ -217,6 +220,7 @@ def subscribe():
 # Unsubscribe route
 # @param client client ID
 # @param topic the topic
+# @return RC
 @app.route("/v1/unsubscribe", methods=['GET'])
 def unsubscribe():
 	try:
@@ -260,6 +264,7 @@ def unsubscribe():
 # @param value the value to publish
 # @param qos the QoS (default 0)
 # @param retain if True, retain the message (default False)
+# @return RC
 @app.route("/v1/publish", methods=['GET'])
 def publish():
 	try:
@@ -308,6 +313,7 @@ def publish():
 # Get data route
 # @param client client ID
 # @param topic the topic
+# @return data as a list of [TOPIC, DATA, QOS, RETAIN]
 @app.route("/v1/get", methods=['GET'])
 def get():
 	# Get the client
