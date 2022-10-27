@@ -3,6 +3,7 @@ Proxy REST MQTT (REpresentational State Queuing Telemetry Transport)
 
 To run it
 ```
+pip install paho-mqtt
 pip install flask
 FLASK_APP=RESQTT.py flask run
 ```
