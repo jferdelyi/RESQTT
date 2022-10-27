@@ -1,2 +1,3 @@
-# RESTQTT
- Proxy REST MQTT
+# RESQTT
+Proxy REST MQTT
+REpresentational State Queuing Telemetry Transport
