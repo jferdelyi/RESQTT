@@ -20,13 +20,13 @@ The wildcard # is replaced by *
 
 Some examples
 ```
-http://127.0.0.1:5000/v1/connect?client=my_client&host=127.0.0.1&keep_alive=45 # Return RC
+http://127.0.0.1:5000/v1/connect?client=my_client&host=127.0.0.1&keep_alive=45
 
 http://127.0.0.1:5000/v1/subscribe?client=my_client&topic=my_topic
 http://127.0.0.1:5000/v1/get?client=my_client&topic=my_topic
 http://127.0.0.1:5000/v1/unsubscribe?client=my_client&topic=my_topic
 
-http://127.0.0.1:5000/v1/publish?client=my_client&topic=my_topic&data=my_data #
+http://127.0.0.1:5000/v1/publish?client=my_client&topic=my_topic&data=my_data
 
 http://127.0.0.1:5000/v1/subscribe?client=my_client&topic=*
 http://127.0.0.1:5000/v1/get?client=my_client&topic=my_other_topic
