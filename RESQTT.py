@@ -125,7 +125,7 @@ def connect():
 		clients[client_id] = client
 
 		# Return OK (RC=0)
-		resp = jsonify(0)
+		resp = jsonify(0) # ERR_SUCCESS
 		resp.status_code = 200
 		return resp
 
@@ -160,7 +160,7 @@ def disconnect():
 		
 		# Client not found
 		else:
-			resp = jsonify("Client not found")
+			resp = jsonify(4) # ERR_NO_CONN
 			resp.status_code = 400
 		
 		# Return response
@@ -177,7 +177,7 @@ def disconnect():
 # @param client client ID
 # @param topic the topic
 # @param qos the QoS (default 0)
-# @return RC
+# @return [RC, Message ID]
 @app.route("/v1/subscribe", methods=['GET'])
 def subscribe():
 	try:
@@ -204,7 +204,7 @@ def subscribe():
 				resp.status_code = 200
 		# Client not found
 		else:
-			resp = jsonify("Client not found")
+			resp = jsonify([4, None]) # ERR_NO_CONN
 			resp.status_code = 400
 		
 		# Return response
@@ -220,7 +220,7 @@ def subscribe():
 # Unsubscribe route
 # @param client client ID
 # @param topic the topic
-# @return RC
+# @return [RC, Message ID]
 @app.route("/v1/unsubscribe", methods=['GET'])
 def unsubscribe():
 	try:
@@ -245,7 +245,7 @@ def unsubscribe():
 				resp.status_code = 200
 		# Client not found
 		else:
-			resp = jsonify("Client not found")
+			resp = jsonify([4, None]) # ERR_NO_CONN
 			resp.status_code = 400
 		
 		# Return response
@@ -264,7 +264,7 @@ def unsubscribe():
 # @param value the value to publish
 # @param qos the QoS (default 0)
 # @param retain if True, retain the message (default False)
-# @return RC
+# @return [RC, Message ID]
 @app.route("/v1/publish", methods=['GET'])
 def publish():
 	try:
@@ -297,7 +297,7 @@ def publish():
 				resp.status_code = 200
 		# Client not found
 		else:
-			resp = jsonify("Client not found")
+			resp = jsonify([4, None]) # ERR_NO_CONN
 			resp.status_code = 400
 		
 		# Return response
@@ -336,6 +336,6 @@ def get():
 
 	# Client not found
 	else:
-		resp = jsonify("Client not found")
+		resp = jsonify(4) # ERR_NO_CONN
 		resp.status_code = 400
 	return resp
