@@ -32,7 +32,7 @@ class MQTTClient(mqtt_client.Client):
 		res = []
 		topics_copy = self.topics.copy()
 		for topic in topics_copy:
-			if self.wildcard_check(topic, wildcard):
+			if self._wildcard_check(topic, wildcard):
 				data = [topic]
 				data.extend(self.topics[topic])
 				res.append(data)
@@ -40,13 +40,15 @@ class MQTTClient(mqtt_client.Client):
 		self.lock.release()
 		return res
 
-	# Return True if the given topic match the given wildcard
+# Return True if the given topic match the given wildcard
 	# @return True if the given topic match
-	def wildcard_check(self, topic, wildcard):
+	def _wildcard_check(self, topic, wildcard):
 		if wildcard == topic:
 			return True
 		elif wildcard == '#':
 			return True
+		elif wildcard.count('#') > 1 or wildcard.find("#") != len(wildcard) - 1: # '#' must be at the end only
+			return False
 
 		res = []
 		t = topic.split('/')
@@ -59,14 +61,16 @@ class MQTTClient(mqtt_client.Client):
 		for i in range(len(w)):
 			if i > len(t) - 1:
 				break
-			if w[i] == '+':
-				res.append(t[i])
 			elif w[i] == '#':
-				res.append('/'.join(t[i:]))
+				res = res + t[i:]
 				break
+			elif w[i] == '+':
+				res.append(t[i])
 			elif w[i] != t[i]:
 				break
-		return len(res) > 0
+			else:
+				res.append(t[i])
+		return res == t
 
 # Callback on message received
 # @param client the client
@@ -313,7 +317,7 @@ def publish():
 # Get data route
 # @param client client ID
 # @param topic the topic
-# @return data as a list of [TOPIC, DATA, QOS, RETAIN]
+# @return data as a list of [TOPIC, DATA, QOS, RETAIN] 
 @app.route("/v1/get", methods=['GET'])
 def get():
 	# Get the client
