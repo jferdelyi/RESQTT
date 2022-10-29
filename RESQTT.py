@@ -40,23 +40,20 @@ class MQTTClient(mqtt_client.Client):
 		self.lock.release()
 		return res
 
-# Return True if the given topic match the given wildcard
+	# Return True if the given topic match the given wildcard
 	# @return True if the given topic match
 	def _wildcard_check(self, topic, wildcard):
+		index = wildcard.find("#")
 		if wildcard == topic:
 			return True
 		elif wildcard == '#':
 			return True
-		elif wildcard.count('#') > 1 or wildcard.find("#") != len(wildcard) - 1: # '#' must be at the end only
+		elif wildcard.count('#') > 1 or index != -1 and (index != len(wildcard) - 1): # '#' must be at the end only
 			return False
 
 		res = []
 		t = topic.split('/')
 		w = wildcard.split('/')
-
-		# Remove empty elements
-		t = list(filter(lambda a: a != '', t))
-		w = list(filter(lambda a: a != '', w))
 
 		for i in range(len(w)):
 			if i > len(t) - 1:
